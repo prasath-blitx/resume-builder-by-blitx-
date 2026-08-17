@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résumé Forge — tailor your resume to any job</title>
+<meta name="description" content="Paste a job description, tailor your resume against it, and download a clean, professional PDF.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">RF</span>
+    <div class="brand-text">
+      <span class="brand-name">Résumé&nbsp;Forge</span>
+      <span class="brand-tag">tailor · match · export</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button id="btn-load-sample" class="btn btn-ghost">Load sample</button>
+    <label class="btn btn-ghost" for="import-json">Import JSON</label>
+    <input type="file" id="import-json" accept="application/json" hidden>
+    <button id="btn-export-json" class="btn btn-ghost">Export JSON</button>
+    <button id="btn-download-pdf" class="btn btn-primary">Download PDF</button>
+  </div>
+</header>
+
+<main class="workbench">
+
+  <!-- LEFT: controls -->
+  <section class="panel-left" aria-label="Resume editor controls">
+
+    <!-- JD Analyzer -->
+    <div class="card jd-card">
+      <div class="card-head">
+        <h2>Job description analyzer</h2>
+        <p>Paste the JD, or upload a .txt / .pdf file. Résumé Forge finds the skills it's looking for and checks them against your resume.</p>
+      </div>
+
+      <textarea id="jd-text" rows="7" placeholder="Paste the full job description here…"></textarea>
+
+      <div class="jd-upload-row">
+        <label class="btn btn-ghost btn-small" for="jd-file">Upload JD file</label>
+        <input type="file" id="jd-file" accept=".txt,.md,.pdf" hidden>
+        <span id="jd-file-name" class="file-name"></span>
+        <button id="btn-analyze" class="btn btn-primary btn-small">Analyze match</button>
+      </div>
+
+      <div id="jd-results" class="jd-results hidden">
+        <div class="match-meter">
+          <div class="ring" id="match-ring" style="--pct:0">
+            <span id="match-pct">0%</span>
+          </div>
+          <div class="match-meta">
+            <span class="match-label">Keyword match</span>
+            <span id="match-sub" class="match-sub">Analyze a JD to see how you line up.</span>
+            <span id="jd-experience-note" class="exp-note hidden"></span>
+          </div>
+        </div>
+
+        <div class="chip-group">
+          <h3>Matched in your resume</h3>
+          <div id="chips-matched" class="chip-row"></div>
+        </div>
+
+        <div class="chip-group">
+          <h3>Suggested changes</h3>
+          <div id="changes-list" class="changes-list"></div>
+          <div class="commit-row">
+            <button id="btn-commit-changes" class="btn btn-accent btn-small">Commit changes</button>
+            <span id="commit-status" class="commit-status"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resume form -->
+    <div class="card form-card">
+      <div class="card-head">
+        <h2>Your resume</h2>
+        <p>Upload an existing CV to fill this in automatically, or build it by hand.</p>
+      </div>
+
+      <div class="form-tabs" id="form-tabs" role="tablist">
+        <button type="button" class="form-tab-btn active" data-tab="upload" role="tab">Upload CV</button>
+        <button type="button" class="form-tab-btn" data-tab="manual" role="tab">Edit manually</button>
+      </div>
+
+      <!-- Upload CV tab -->
+      <div id="tab-upload" class="tab-panel active">
+        <p class="tab-hint">Upload your existing résumé and we'll read it and fill in the fields below. Supported: .pdf, .docx, .txt</p>
+
+        <div class="jd-upload-row">
+          <label class="btn btn-ghost btn-small" for="cv-file">Choose CV file</label>
+          <input type="file" id="cv-file" accept=".pdf,.docx,.txt,.md" hidden>
+          <span id="cv-file-name" class="file-name"></span>
+        </div>
+
+        <div id="cv-parse-status" class="parse-status hidden"></div>
+
+        <div id="cv-parsed-summary" class="parsed-summary hidden">
+          <h3>Here's what we found — review, then commit it</h3>
+          <ul id="cv-parsed-list"></ul>
+          <div class="parsed-actions">
+            <button type="button" id="btn-commit-cv" class="btn btn-accent btn-small">Commit to resume</button>
+            <button type="button" id="btn-discard-cv" class="btn btn-ghost btn-small">Discard</button>
+          </div>
+          <p class="parse-caveat">Parsing runs locally and is best-effort — double check names, dates and bullets under “Edit manually” after committing.</p>
+        </div>
+      </div>
+
+      <!-- Edit manually tab -->
+      <form id="tab-manual" class="tab-panel" autocomplete="off">
+
+        <fieldset class="field-section">
+          <legend>Header</legend>
+          <div class="grid-2">
+            <label>Full name<input type="text" id="f-name" placeholder="Jordan Alvarez"></label>
+            <label>Target role / tagline<input type="text" id="f-title" placeholder="Senior Product Designer"></label>
+          </div>
+          <div class="grid-3">
+            <label>Email<input type="email" id="f-email" placeholder="jordan@email.com"></label>
+            <label>Phone<input type="text" id="f-phone" placeholder="+1 555 123 4567"></label>
+            <label>Location<input type="text" id="f-location" placeholder="Austin, TX"></label>
+          </div>
+          <div class="grid-2">
+            <label>LinkedIn / portfolio URL<input type="text" id="f-link1" placeholder="linkedin.com/in/jordan"></label>
+            <label>Website / GitHub URL<input type="text" id="f-link2" placeholder="github.com/jordan"></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <legend>Summary</legend>
+          <label class="full">Professional summary
+            <textarea id="f-summary" rows="3" placeholder="2–3 sentences on who you are and the value you bring."></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <legend>Skills</legend>
+          <label class="full">Add a skill and press Enter
+            <input type="text" id="f-skill-input" placeholder="e.g. Figma, then press Enter">
+          </label>
+          <div id="skills-chip-row" class="chip-row editable"></div>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <div class="section-head-row">
+            <legend>Experience</legend>
+            <button type="button" id="btn-add-exp" class="btn btn-ghost btn-small">+ Add role</button>
+          </div>
+          <div id="experience-list" class="repeater-list"></div>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <div class="section-head-row">
+            <legend>Education</legend>
+            <button type="button" id="btn-add-edu" class="btn btn-ghost btn-small">+ Add school</button>
+          </div>
+          <div id="education-list" class="repeater-list"></div>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <div class="section-head-row">
+            <legend>Projects <span class="optional-tag">optional</span></legend>
+            <button type="button" id="btn-add-proj" class="btn btn-ghost btn-small">+ Add project</button>
+          </div>
+          <div id="projects-list" class="repeater-list"></div>
+        </fieldset>
+
+        <fieldset class="field-section">
+          <legend>Certifications <span class="optional-tag">optional</span></legend>
+          <label class="full">Comma-separated
+            <input type="text" id="f-certs" placeholder="AWS Certified Solutions Architect, PMP">
+          </label>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+
+  <!-- RIGHT: live preview -->
+  <section class="panel-right" aria-label="Resume preview">
+    <div class="preview-toolbar">
+      <span>Live preview</span>
+      <div class="template-switch" id="template-switch">
+        <button type="button" class="tpl-btn active" data-template="classic">Classic</button>
+        <button type="button" class="tpl-btn" data-template="compact">Compact</button>
+      </div>
+    </div>
+    <div class="preview-stage">
+      <div id="resume-preview" class="resume-page tpl-classic">
+        <!-- rendered by js/app.js -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot-note">
+  Runs entirely in your browser — nothing is uploaded anywhere. Built with Résumé Forge.
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.2/mammoth.browser.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
