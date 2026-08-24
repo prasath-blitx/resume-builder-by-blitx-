@@ -2,17 +2,21 @@
    Résumé Forge — design tokens
    ============================================================ */
 :root{
-  --paper:#F2F3F5;
+  /* Pearl White backgrounds */
+  --paper:#F9F6F0;
   --panel:#FFFFFF;
-  --line:#DDE0E5;
-  --line-strong:#C7CBD3;
-  --ink:#12161C;
-  --ink-soft:#5B6472;
-  --ink-faint:#8A93A0;
+  --line:#E8E4DA;
+  --line-strong:#D1CFC7;
 
-  --accent:#1F6F5C;
-  --accent-dark:#164F41;
-  --accent-soft:#DCEEE8;
+  /* Warmed ink colors to complement the pearl white */
+  --ink:#1C1919;
+  --ink-soft:#635C5D;
+  --ink-faint:#918A8B;
+
+  /* Burgundy accents */
+  --accent:#800020;
+  --accent-dark:#5A0016;
+  --accent-soft:#F2DCE1;
 
   --flag:#A85D18;
   --flag-soft:#F5E6D3;
@@ -24,8 +28,8 @@
   --radius-m:10px;
   --radius-l:16px;
 
-  --shadow-card: 0 1px 2px rgba(18,22,28,0.04), 0 8px 24px -12px rgba(18,22,28,0.12);
-  --shadow-page: 0 1px 1px rgba(18,22,28,0.04), 0 20px 48px -20px rgba(18,22,28,0.28);
+  --shadow-card: 0 1px 2px rgba(28, 25, 25, 0.04), 0 8px 24px -12px rgba(28, 25, 25, 0.12);
+  --shadow-page: 0 1px 1px rgba(28, 25, 25, 0.04), 0 20px 48px -20px rgba(28, 25, 25, 0.28);
 
   --font-display: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
   --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -389,4 +393,3 @@ input:focus, textarea:focus{ border-color:var(--accent); }
     margin:0; padding:44px 54px;
   }
   .preview-stage{ overflow:visible; max-height:none; padding:0; }
-}
