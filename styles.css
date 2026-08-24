@@ -2,13 +2,14 @@
    Résumé Forge — design tokens
    ============================================================ */
 :root{
-  /* Pearl White backgrounds */
-  --paper:#F9F6F0;
-  --panel:#FFFFFF;
+  /* Pearl White for the main UI cards */
+  --panel:#F9F6F0;
+  /* Pure White for inner inputs/chips so they contrast against the cards */
+  --paper:#FFFFFF;
   --line:#E8E4DA;
   --line-strong:#D1CFC7;
 
-  /* Warmed ink colors to complement the pearl white */
+  /* Warmed ink colors */
   --ink:#1C1919;
   --ink-soft:#635C5D;
   --ink-faint:#918A8B;
@@ -40,7 +41,7 @@
 html{ -webkit-text-size-adjust:100%; }
 body{
   margin:0;
-  background:var(--paper);
+  background:#800020; /* Full Burgundy Website Background */
   color:var(--ink);
   font-family:var(--font-body);
   line-height:1.5;
@@ -65,7 +66,7 @@ a{ color:var(--accent-dark); }
 .brand{ display:flex; align-items:center; gap:10px; }
 .brand-mark{
   width:34px; height:34px; border-radius:8px;
-  background:var(--ink); color:#fff;
+  background:var(--accent); color:#F9F6F0; /* Burgundy Logo Box */
   display:flex; align-items:center; justify-content:center;
   font-family:var(--font-display); font-weight:700; font-size:13px;
   letter-spacing:0.02em;
@@ -96,7 +97,7 @@ a{ color:var(--accent-dark); }
 .btn-accent{ background:var(--accent); color:#fff; }
 .btn-accent:hover{ background:var(--accent-dark); }
 .btn-ghost{ background:transparent; color:var(--ink); border-color:var(--line-strong); }
-.btn-ghost:hover{ background:var(--paper); }
+.btn-ghost:hover{ background:var(--panel); filter:brightness(0.95); }
 .btn-small{ padding:6px 12px; font-size:12.5px; }
 .btn-danger{ background:transparent; color:var(--danger); border-color:var(--danger-soft); }
 .btn-danger:hover{ background:var(--danger-soft); }
@@ -267,7 +268,7 @@ input[type=text], input[type=email], textarea{
   border:1px solid var(--line-strong);
   border-radius:var(--radius-s);
   padding:9px 11px;
-  background:var(--panel);
+  background:var(--paper);
   width:100%;
 }
 input:focus, textarea:focus{ border-color:var(--accent); }
@@ -290,7 +291,7 @@ input:focus, textarea:focus{ border-color:var(--accent); }
 .preview-toolbar{
   display:flex; align-items:center; justify-content:space-between;
   padding:0 4px 12px;
-  font-size:12.5px; color:var(--ink-faint);
+  font-size:12.5px; color:#F9F6F0; opacity: 0.9;
   font-family:var(--font-mono); text-transform:uppercase; letter-spacing:0.06em;
 }
 .template-switch{ display:flex; gap:4px; background:var(--panel); border:1px solid var(--line); border-radius:999px; padding:3px; }
@@ -360,7 +361,7 @@ input:focus, textarea:focus{ border-color:var(--accent); }
    Footer
    ============================================================ */
 .foot-note{
-  text-align:center; padding:18px; font-size:12px; color:var(--ink-faint);
+  text-align:center; padding:18px; font-size:12px; color:#F9F6F0; opacity: 0.8;
 }
 
 /* ============================================================
@@ -393,3 +394,4 @@ input:focus, textarea:focus{ border-color:var(--accent); }
     margin:0; padding:44px 54px;
   }
   .preview-stage{ overflow:visible; max-height:none; padding:0; }
+}
